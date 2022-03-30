@@ -44,7 +44,11 @@ export default function Index() {
   function handleMouseMove(event: MouseEvent) {
     let canvas = canvasRef.current!;
     let context = canvas.getContext('2d')!;
-    let data = context.getImageData(event.nativeEvent.offsetX, event.nativeEvent.offsetY, 1, 1).data;
+
+    let scale = canvas.width / canvas.getBoundingClientRect().width;
+    let x = Math.trunc(event.nativeEvent.offsetX * scale);
+    let y = Math.trunc(event.nativeEvent.offsetY * scale);
+    let data = context.getImageData(x, y, 1, 1).data;
     let [r, g, b, a] = data;
     a /= 255;
     setActiveColor(`rgba(${r}, ${g}, ${b}, ${a})`);
@@ -54,11 +58,11 @@ export default function Index() {
       let dg = g - color.rgba[1];
       let db = b - color.rgba[2];
       let da = (a - color.rgba[3]) * 255;
-      let score = Math.sqrt(dr*dr + dg*dg + db*db + da*da);
-      return { ...color, score};
+      let score = Math.sqrt(dr * dr + dg * dg + db * db + da * da);
+      return { ...color, score };
     });
 
-    sortedColors.sort((c1, c2) => c1.score - c2.score);
+    sortedColors.sort((c1: any, c2: any) => c1.score - c2.score);
 
     setSortedColors(sortedColors);
   }
@@ -76,13 +80,13 @@ export default function Index() {
           </div>
         </div>
         <div>
-          <canvas style={{ width: "100%", objectFit: "contain" }} onMouseMove={handleMouseMove} ref={canvasRef}></canvas>
+          <canvas style={{ width: "100%", objectFit: "contain", cursor: "crosshair" }} onMouseMove={handleMouseMove} ref={canvasRef}></canvas>
         </div>
       </div>
       <div style={{ flex: "none", width: "20vw", fontFamily: "sans-serif", borderLeft: "1px solid black" }}>
         <div style={{ backgroundColor: activeColor, marginTop: "4px", height: "32px" }}>
         </div>
-        <div style={{ padding: "8px 0", textAlign: "center"}}>
+        <div style={{ padding: "8px 0", textAlign: "center" }}>
           {activeColor}
         </div>
         {sortedColors.map((color: any) => {
@@ -96,8 +100,8 @@ export default function Index() {
               </div>
               <div>
                 <div>{color.name}</div>
-                <div style={{color: "#999"}}>{cssColor}</div>
-                <div style={{color: "#999"}}>Diff score: {Math.trunc(color.score)}</div>
+                <div style={{ color: "#999" }}>{cssColor}</div>
+                <div style={{ color: "#999" }}>Diff score: {Math.trunc(color.score)}</div>
               </div>
             </div>
           );
