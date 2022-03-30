@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useLoaderData } from "remix";
 import { getColors } from "~/services/colors";
 
@@ -41,6 +41,21 @@ export default function Index() {
     }
   }
 
+  useEffect(() => {
+    let canvas = canvasRef.current!;
+    let context = canvas.getContext('2d')!;
+    let gradient = context.createLinearGradient(10, 0, 500, 0);
+    gradient.addColorStop(0, 'red');
+    gradient.addColorStop(1 / 6, 'orange');
+    gradient.addColorStop(2 / 6, 'yellow');
+    gradient.addColorStop(3 / 6, 'green');
+    gradient.addColorStop(4 / 6, 'blue');
+    gradient.addColorStop(5 / 6, 'indigo');
+    gradient.addColorStop(1, 'violet');
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }, [])
+
   function handleMouseMove(event: MouseEvent) {
     let canvas = canvasRef.current!;
     let context = canvas.getContext('2d')!;
@@ -69,8 +84,8 @@ export default function Index() {
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
-      <div style={{ flex: "1 1 0%", fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-        <div style={{ marginBottom: "24px;" }}>
+      <div style={{ textAlign: "center", flex: "1 1 0%", fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+        <div style={{ marginBottom: "48px;" }}>
           <h2>APL Color Lookup</h2>
           <div>
             <label htmlFor="loadImage" style={{ border: "1px solid black", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>
