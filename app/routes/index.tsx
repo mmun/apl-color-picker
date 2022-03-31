@@ -30,7 +30,7 @@ export default function Index() {
           canvas.width = image.width;
           canvas.height = image.height;
 
-          let context = canvas.getContext('2d')!;
+          let context = canvas.getContext("2d")!;
           context.drawImage(image, 0, 0, image.width, image.height);
         };
 
@@ -43,22 +43,22 @@ export default function Index() {
 
   useEffect(() => {
     let canvas = canvasRef.current!;
-    let context = canvas.getContext('2d')!;
+    let context = canvas.getContext("2d")!;
     let gradient = context.createLinearGradient(10, 0, 500, 0);
-    gradient.addColorStop(0, 'red');
-    gradient.addColorStop(1 / 6, 'orange');
-    gradient.addColorStop(2 / 6, 'yellow');
-    gradient.addColorStop(3 / 6, 'green');
-    gradient.addColorStop(4 / 6, 'blue');
-    gradient.addColorStop(5 / 6, 'indigo');
-    gradient.addColorStop(1, 'violet');
+    gradient.addColorStop(0, "red");
+    gradient.addColorStop(1 / 6, "orange");
+    gradient.addColorStop(2 / 6, "yellow");
+    gradient.addColorStop(3 / 6, "green");
+    gradient.addColorStop(4 / 6, "blue");
+    gradient.addColorStop(5 / 6, "indigo");
+    gradient.addColorStop(1, "violet");
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
   }, [])
 
   function handleMouseMove(event: MouseEvent) {
     let canvas = canvasRef.current!;
-    let context = canvas.getContext('2d')!;
+    let context = canvas.getContext("2d")!;
 
     let scale = canvas.width / canvas.getBoundingClientRect().width;
     let x = Math.trunc(event.nativeEvent.offsetX * scale);
@@ -99,7 +99,12 @@ export default function Index() {
         </div>
       </div>
       <div style={{ flex: "none", width: "20vw", fontFamily: "sans-serif", borderLeft: "1px solid black" }}>
-        <div style={{ backgroundColor: activeColor, marginTop: "4px", height: "32px" }}>
+        <div style={{
+          backgroundImage: "linear-gradient(45deg, #DDDDDD 25%, transparent 25%), linear-gradient(-45deg, #DDDDDD 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #DDDDDD 75%), linear-gradient(-45deg, transparent 75%, #DDDDDD 75%)",
+          backgroundSize: "16px 16px",
+          backgroundPosition: "0 0, 0 8px, 8px -8px, -8px 0px"
+        }}>
+          <div style={{ backgroundColor: activeColor, marginTop: "4px", height: "32px" }}></div>
         </div>
         <div style={{ padding: "8px 0", textAlign: "center" }}>
           {activeColor}
