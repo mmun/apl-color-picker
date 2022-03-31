@@ -1,6 +1,7 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useLoaderData } from "remix";
 import { getColors } from "~/services/colors";
+import colorDiff from "color-diff";
 
 export function loader() {
   return getColors();
@@ -69,15 +70,13 @@ export default function Index() {
     setActiveColor(`rgba(${r}, ${g}, ${b}, ${a})`);
 
     let sortedColors = colorData.map((color: any) => {
-      let dr = r - color.rgba[0];
-      let dg = g - color.rgba[1];
-      let db = b - color.rgba[2];
-      let da = (a - color.rgba[3]) * 255;
-      let score = Math.sqrt(dr * dr + dg * dg + db * db + da * da);
-      return { ...color, score };
+      let lab1 = colorDiff.rgb_to_lab({ R: r, G: g, B: b, A: a });
+      let lab2 = colorDiff.rgb_to_lab({ R: color.rgba[0], G: color.rgba[1], B: color.rgba[2], A: color.rgba[3] });
+      let delta = colorDiff.diff(lab1, lab2);
+      return { ...color, delta };
     });
 
-    sortedColors.sort((c1: any, c2: any) => c1.score - c2.score);
+    sortedColors.sort((c1: any, c2: any) => c1.delta - c2.delta);
 
     setSortedColors(sortedColors);
   }
@@ -121,7 +120,7 @@ export default function Index() {
               <div>
                 <div>{color.name}</div>
                 <div style={{ color: "#999" }}>{cssColor}</div>
-                <div style={{ color: "#999" }}>Diff score: {Math.trunc(color.score)}</div>
+                <div style={{ color: "#999" }}>Delta: {color.delta.toFixed(2)}</div>
               </div>
             </div>
           );
