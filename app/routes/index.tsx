@@ -45,7 +45,7 @@ export default function Index() {
   useEffect(() => {
     let canvas = canvasRef.current!;
     let context = canvas.getContext("2d")!;
-    let gradient = context.createLinearGradient(10, 0, 500, 0);
+    let gradient = context.createLinearGradient(0, 0, canvas.width, 0);
     gradient.addColorStop(0, "red");
     gradient.addColorStop(1 / 6, "orange");
     gradient.addColorStop(2 / 6, "yellow");
@@ -53,6 +53,14 @@ export default function Index() {
     gradient.addColorStop(4 / 6, "blue");
     gradient.addColorStop(5 / 6, "indigo");
     gradient.addColorStop(1, "violet");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+    gradient.addColorStop(1 / 2, "rgba(255, 255, 255, 0)");
+    gradient.addColorStop(1 / 2, "rgba(0, 0, 0, 0)");
+    gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
   }, [])
